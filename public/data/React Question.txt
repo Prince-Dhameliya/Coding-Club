@@ -1,0 +1,51 @@
+What is react helmet?
+According to official docs React Helmet is a reusable component, which helps manage all of your changes to the document head.
+
+What library we use to access all use Hook?
+Using react-router-dom
+
+What is useHistory?
+Using the history instance you can redirect users to another page.
+
+What is use context used for?
+“useContext” hook is used to create common data that can be accessed throughout the component hierarchy without passing the props down manually to each level. Context defined will be available to all the child components without involving “props”.
+
+Why do we use context API in React?
+It makes it possible to pass data from parent to children nested deep down the component tree directly, instead of passing it down through a chain of props.
+
+What is useRef?
+It can be used to store a mutable value that does not cause a re-render when updated. useRef returns a object.  It can be used to access a DOM element directly.
+
+Why we use React over html?
+It lets you create reusable components so that your code is easy to read and maintain
+
+
+
+* What are you doing in your project?/ Tell me about your project?
+-> 
+We have made a resume builder for build resume for job application without consuming more time for build resume structure.
+also we have created two resume template structure and in future we like to add more templates and more features.
+We have used react-pdf library to generate pdf.
+We can change another template without loosing data after filling data and generating that pdf.
+We have created this project using react js and material ui.
+Even data cannot be lost either the tab close or turn off our pc.
+
+* Problems you have faced?
+->
+When we have used react-pdf package to generate pdf, we faced problem to view svg icon on pdf. 
+After Researching we came to conclusion that there is separate element for view svg icon.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
