@@ -77,7 +77,7 @@ const DynamicInputFields = ({ onFormDataChange }) => {
         startIcon={<AddCircleOutline />}
         onClick={handleAddFields}
       >
-        Add Member
+        Add Field
       </Button>
     </form>
   );

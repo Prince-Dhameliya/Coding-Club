@@ -1,6 +1,6 @@
 /* Styles */
 .bg-image {
-  background: url(../public/assets/wall.jpg) center;
+  background: url(../public/assets/background.png) center;
   background-size: cover;
 }
 

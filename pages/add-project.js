@@ -4,17 +4,11 @@ import { Btn, Header } from "../components";
 // uuid
 import { v4 as uuidv4 } from "uuid";
 
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-
-
 // toaster
 import toast from "react-hot-toast";
 import axios from "axios";
 import Tags from "../components/utils/Tags";
 import DynamicInputFields from "../components/utils/DynamicInputFields";
-
 
 const Addproject = (props) => {
   const { user } = props;
@@ -33,7 +27,6 @@ const Addproject = (props) => {
 
   // default values
   const [values, setValues] = useState({
-    project_type:"",
     project_name: "",
     project_url:"",
     project_description: "",
@@ -47,8 +40,8 @@ const Addproject = (props) => {
 
 
   });
-console.log(values)
-  const { project_type, project_name,project_url,project_description,mentor_name,technologies,members,company_name,company_address,company_contact,company_city} = values;
+// console.log(values)
+  const { project_name,project_url,project_description,mentor_name,technologies,members,company_name,company_address,company_contact,company_city} = values;
 
   // handleChange of inputs
   const handleChange = (name) => (event) => {
@@ -127,8 +120,6 @@ console.log(values)
       }
     } else {
       toast.error("Please Sign In");
-      
-    
     }
   };
   return (
@@ -209,35 +200,7 @@ console.log(values)
               <DynamicInputFields onFormDataChange={handleFormDataChange}/>
             </div>
 
-          
-
             <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Company Project ?
-              </label>
-              <RadioGroup value={project_type} onChange={handleChange("project_type")}>
-                <div className="flex">
-                  <div className="flex items-center">
-                    <FormControlLabel
-                      value="Yes"
-                      control={<Radio />}
-                    />
-                    <h3 className="-ml-5 dark:text-white text-black font-medium">
-                      Yes
-                    </h3>
-                  </div>
-                  <div className="flex items-center ml-6">
-                    <FormControlLabel value="No" control={<Radio />} />
-                    <h3 className="-ml-5 dark:text-white text-black font-medium">
-                      No
-                    </h3>
-                  </div>
-                </div>
-              </RadioGroup>
-            </div>
-
-            {
-              project_type === "Yes" ? <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Company Information
               </label>
@@ -282,9 +245,6 @@ console.log(values)
                 placeholder="Company City"
               /><br />
             </div>
-            : null
-            }
-            
 
             <div className="flex items-center justify-between">
               <Btn>
