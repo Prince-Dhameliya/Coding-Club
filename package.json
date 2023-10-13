@@ -2,7 +2,7 @@
   "name": "coding-club",
   "version": "0.1.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "cross-env NODE_OPTIONS='--openssl-legacy-provider' next dev",
     "build": "next build",
     "start": "npm run graphql",
     "graphql": "node graphql/index.js"
@@ -21,6 +21,7 @@
     "bcrypt": "^5.1.1",
     "confetti-js": "0.0.18",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "date-fns": "^2.22.1",
     "dotenv": "^10.0.0",
     "firebase": "^10.4.0",
