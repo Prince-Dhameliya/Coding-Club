@@ -125,16 +125,16 @@ const Hero = ({ setOpen, user, setUser }) => {
             </Link>
           </div>
         </div>
-        {/* <div className="w-full lg:w-6/12 xl:w-6/12 h-auto lg:h-full xl:h-full flex items-center justify-center flex-col relative bg-pattern-hero pb-10 lg:pb-0 xl:pb-0 animate__animated animate__fadeInRight">
+        <div className="w-full lg:w-6/12 xl:w-6/12 h-auto lg:h-full xl:h-full flex items-center justify-center flex-col relative bg-pattern-hero pb-10 lg:pb-0 xl:pb-0 animate__animated animate__fadeInRight">
           <div className="absolute h-full w-full flex items-center justify-center">
             <img
               src="/assets/icon.svg"
               className="w-[320px] lg:w-[450px] xl:w-[450px] opacity-50 lg:opacity-100 xl:opacity-100"
             />
           </div>
-        </div> */}
+        </div>
       </div>
-      {/* <div className="h-auto w-full flex items-center justify-center p-7">
+      <div className="h-auto w-full flex items-center justify-center p-7">
         <div className="h-auto min-h-[80vh] w-full rounded-md bg-[rgba(0,0,0,0.6)] flex items-center justify-center flex-wrap border border-[#B84F90]">
           <div className="flex flex-wrap w-full justify-center mt-10">
             {features.map((feature, key) => (
@@ -147,7 +147,7 @@ const Hero = ({ setOpen, user, setUser }) => {
             ))}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
