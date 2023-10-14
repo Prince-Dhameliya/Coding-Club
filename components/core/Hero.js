@@ -99,20 +99,21 @@ const Hero = ({ setOpen, user, setUser }) => {
       <Header setOpen={setOpen} user={user} setUser={setUser} />
       <div className="flex items-center justify-center h-auto min-h-[90vh] lg:h-[90vh] xl:h-[90vh] w-full flex-col lg:flex-row xl:flex-row overflow-hidden">
         <div className="w-full lg:w-6/12 xl:w-6/12 h-auto lg:h-full xl:h-full flex items-start justify-center flex-col pl-4 lg:pl-10 xl:pl-10 relative z-10 py-4 lg:py-0 xl:py-0 overflow-hidden animate__animated animate__fadeInLeft">
-          <h3 className="text-sm lg:text-base xl:text-base bg-text-gradient font-bold mb-2 uppercase tracking-wider">
-            300+ Resources. Sorting. Open Source. Categories.
-          </h3>
+          
           <h1 className="font-bold text-3xl lg:text-[2.75rem] xl:text-[2.75rem] lg:leading-[3rem]">
-            World biggest storehouse of developer resources
+            Coding Club
           </h1>
           <p className="text-light text-[#aaa] my-2 mt-3 text-xs lg:text-sm xl:text-sm">
-            Coding Club is the all in one storehouse for developer resources.
-            Coding Club is made up of 300+ curated resources from 230+ sources.
-            Filter by categories, or source, sort by time or popularity, dark
-            mode, bookmark resources, add new resources, request feature,
-            and much more features, make the app amazing! 🤟
+            The MSU Coding Club is a vibrant community of tech enthusiasts and 
+            aspiring programmers at Michigan State University. This student-led organization 
+            provides a platform for students to enhance their coding skills, collaborate
+            on projects, and stay up-to-date with the latest technology trends. Members of
+            the MSU Coding Club engage in coding challenges, hackathons, and workshops,
+            fostering a supportive environment for learning and networking in the world of
+            software development. It's a fantastic place for students to 
+            expand their coding knowledge and gain valuable experience in the field.🤟
           </p>
-          <div className="flex mt-2">
+          {/* <div className="flex mt-2">
             <Link href="/app">
               <a>
                 <Button className="!p-0 !w-auto !h-auto !m-auto shine">
@@ -123,7 +124,7 @@ const Hero = ({ setOpen, user, setUser }) => {
                 </Button>
               </a>
             </Link>
-          </div>
+          </div> */}
         </div>
         <div className="w-full lg:w-6/12 xl:w-6/12 h-auto lg:h-full xl:h-full flex items-center justify-center flex-col relative bg-pattern-hero pb-10 lg:pb-0 xl:pb-0 animate__animated animate__fadeInRight">
           <div className="absolute h-full w-full flex items-center justify-center">
@@ -134,7 +135,7 @@ const Hero = ({ setOpen, user, setUser }) => {
           </div>
         </div>
       </div>
-      <div className="h-auto w-full flex items-center justify-center p-7">
+      {/* <div className="h-auto w-full flex items-center justify-center p-7">
         <div className="h-auto min-h-[80vh] w-full rounded-md bg-[rgba(0,0,0,0.6)] flex items-center justify-center flex-wrap border border-[#B84F90]">
           <div className="flex flex-wrap w-full justify-center mt-10">
             {features.map((feature, key) => (
@@ -147,7 +148,7 @@ const Hero = ({ setOpen, user, setUser }) => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

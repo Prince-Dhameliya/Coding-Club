@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 
 // Btn
 import { Btn, Header } from "../components";
-import { FiCheck, FiX } from "react-icons/fi";
 
 // material ui select
 import MenuItem from "@material-ui/core/MenuItem";
