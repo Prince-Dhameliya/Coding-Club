@@ -98,32 +98,33 @@ const Login = ({setUser}) => {
             }),
         });
         const data = await response.json();
-        const accessToken = data?.accessToken;
-        const email = data?.email;
-        const displayName = data?.displayName;
-        localStorage.setItem("profile", JSON.stringify({ email, displayName, username, accessToken }));
-        setUser({ email, displayName, username, accessToken });
+        if(!data?.email){
+          toast.error("Unauthorized User");
+        } else {
+          const accessToken = data?.accessToken;
+          const email = data?.email;
+          const displayName = data?.displayName;
+          // console.log({accessToken, displayName, username, email});
+          localStorage.setItem("profile", JSON.stringify({ email, displayName, username, accessToken }));
+          setUser({ email, displayName, username, accessToken });
 
-        // making everything default
-        setValues({
-            email: "",
-            mobileno: "",
-            username: "",
-            password: "",
-        });
-        push('/');
+          toast.success("Login")
+
+          // making everything default
+          setValues({
+              email: "",
+              mobileno: "",
+              username: "",
+              password: "",
+          });
+          push('/');
+        }
     } catch (err) {
-        console.log(err);
-        // if (!err?.response) {
-        //     setErrMsg('No Server Response');
-        // } else if (err.response?.status === 400) {
-        //     setErrMsg('Missing Username or Password');
-        // } else if (err.response?.status === 401) {
-        //     setErrMsg('Unauthorized');
-        // } else {
-        //     setErrMsg('Login Failed');
-        // }
-        // errRef.current.focus();
+        if (!err?.response) {
+            toast.error('Unauthorized User');
+        } else {
+            toast.error('Login Failed');
+        }
     }
   };
 

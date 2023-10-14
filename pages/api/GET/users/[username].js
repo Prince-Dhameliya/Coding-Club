@@ -14,6 +14,7 @@ export default async (req, res) => {
     });
   
     let data = await request.json();
+    if(data.length === 0) return res.status(404).json([]);
     data[0].roles = Object.values(data[0].roles);
     res.status(200).json(data);
   };
