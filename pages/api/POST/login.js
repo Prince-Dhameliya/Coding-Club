@@ -26,9 +26,9 @@ export default async function handler(req, res) {
   });
 
   const data = await request.json();
-  if (data.length == 0) return res.sendStatus(401); //Unauthorized 
+  if (data.length == 0) return res.status(401).json(); //Unauthorized 
   const foundUser = data[0];
-
+  
   // evaluate password 
   const match = await bcrypt.compare(password, foundUser.password);
 
@@ -47,8 +47,8 @@ export default async function handler(req, res) {
         );
         const email = foundUser.email;
         const displayName = foundUser.firstname + " " + foundUser.lastname;
-        res.json({ email, displayName, accessToken });
+        res.status(200).json({ email, displayName, accessToken });
     } else {
-        res.sendStatus(401);
+        return res.status(401).json();
     }
 }

@@ -79,8 +79,10 @@ function MyApp({ Component, pageProps }) {
     if(window !== undefined) {
       if(window.localStorage.getItem("profile")) {
         const data = JSON.parse(window.localStorage.getItem("profile"));
-        setUser(data);
-        fetchRoles(data?.username);
+        if(data?.username) {
+          setUser(data);
+          fetchRoles(data?.username);
+        }
       }
       else {
         // adding a blank [] if no bookmarks found
