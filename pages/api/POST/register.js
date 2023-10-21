@@ -4,8 +4,7 @@ import bcrypt from 'bcrypt';
 
 export default async function handler(req, res) {
   req.body = JSON.parse(req.body);
-  const { email, mobileno ,firstname, lastname, username, password, gender, batch, course } =
-    req.body;
+  const { email, mobileno ,firstname, lastname, username, password, gender, batch, course } = req.body;
 
   if (!username || !password) return res.status(400).json({ 'message': 'Username and password are required.' });
 
