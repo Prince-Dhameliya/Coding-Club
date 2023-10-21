@@ -35,24 +35,7 @@ const Login = ({setUser}) => {
   const { push } = useRouter();
 
   useEffect(() => {
-
-    const getUser = async () => {
-        const duplicate = await fetch(
-            `http://localhost:3000/api/GET/users/${username}`,
-            {
-              method: "GET",
-            }
-        );
-        const isuserexist = await duplicate.json();
-        if(isuserexist?.length == 0) {
-            setIsValidUsername(false);
-        }
-        else {
-            setIsValidUsername(true);
-        }
-    }
-
-    if(username != "") getUser();
+    setIsValidUsername(true)
   },[username])
 
   // destructuring values
@@ -65,6 +48,25 @@ const Login = ({setUser}) => {
   // submit event
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const getUser = async () => {
+      const duplicate = await fetch(
+          `http://localhost:3000/api/GET/users/${username}`,
+          {
+            method: "GET",
+          }
+      );
+      const isuserexist = await duplicate.json();
+      if(isuserexist?.length == 0) {
+          setIsValidUsername(false);
+      }
+      else {
+          setIsValidUsername(true);
+      }
+  }
+
+  if(username != "") getUser();
+
     // if(!EMAIL_REGEX.test(email)) {
     //   toast.error("Email is not valid");
     //   return;
@@ -97,13 +99,10 @@ const Login = ({setUser}) => {
               password,
             }),
         });
-        const data = await response.json();
-        if(!data?.email){
+        const {email, displayName, accessToken, error} = await response.json();
+        if(error != undefined) {
           toast.error("Unauthorized User");
-        } else {
-          const accessToken = data?.accessToken;
-          const email = data?.email;
-          const displayName = data?.displayName;
+        } else if(email != undefined && displayName != undefined && accessToken != undefined) {
           // console.log({accessToken, displayName, username, email});
           localStorage.setItem("profile", JSON.stringify({ email, displayName, username, accessToken }));
           setUser({ email, displayName, username, accessToken });
@@ -118,6 +117,8 @@ const Login = ({setUser}) => {
               password: "",
           });
           push('/');
+        } else {
+          toast.error('Login Failed');
         }
     } catch (err) {
         if (!err?.response) {
