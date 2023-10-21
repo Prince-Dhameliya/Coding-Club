@@ -191,19 +191,25 @@ const Header = ({ user, setUser }) => {
               </h3>
             </a>
           </Link> */}
-          <Link href="/blogs">
-            <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
-              Blogs
+          <Link href="/contributors">
+            <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
+              <h3 className="font-bold continuous-line text-center text-white">
+                Blogs
+              </h3>
             </a>
           </Link>
-          <Link href="/events">
-            <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
-              Events
+          <Link href="/contributors">
+            <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
+              <h3 className="font-bold continuous-line text-center text-white">
+                Events
+              </h3>
             </a>
           </Link>
-          <Link href="/projects">
-            <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
-              Projects
+          <Link href="/contributors">
+            <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
+              <h3 className="font-bold continuous-line text-center text-white">
+                Projects
+              </h3>
             </a>
           </Link>
           <Link href="/contributors">
@@ -217,6 +223,13 @@ const Header = ({ user, setUser }) => {
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
                 On Review
+              </h3>
+            </a>
+          </Link>
+          <Link href="/reviews">
+            <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
+              <h3 className="font-bold continuous-line text-center text-white">
+                Our Team
               </h3>
             </a>
           </Link>
