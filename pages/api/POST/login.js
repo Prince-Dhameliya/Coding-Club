@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   const { email, mobileno ,username, password } =
     req.body;
 
-  if (!username || !password) return res.status(400).json({ 'message': 'Username and password are required.' });
+  if (!username || !password) return res.status(400).json({ error: 'Username and password are required.' });
 
   let uuid = uuidv4().replace(/-/g, "");
 
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   });
 
   const data = await request.json();
-  if (data.length == 0) return res.status(401).json(); //Unauthorized 
+  if (data.length == 0) return res.status(401).json({error: "Unauthorized User"}); //Unauthorized 
   const foundUser = data[0];
   
   // evaluate password 
@@ -49,6 +49,6 @@ export default async function handler(req, res) {
         const displayName = foundUser.firstname + " " + foundUser.lastname;
         res.status(200).json({ email, displayName, accessToken });
     } else {
-        return res.status(401).json();
+        return res.status(401).json({error: "Unauthorized User"});
     }
 }
