@@ -99,13 +99,10 @@ const Login = ({setUser}) => {
               password,
             }),
         });
-        const data = await response.json();
-        if(!data?.email){
+        const {email, displayName, accessToken, error} = await response.json();
+        if(error != undefined) {
           toast.error("Unauthorized User");
-        } else {
-          const accessToken = data?.accessToken;
-          const email = data?.email;
-          const displayName = data?.displayName;
+        } else if(email != undefined && displayName != undefined && accessToken != undefined) {
           // console.log({accessToken, displayName, username, email});
           localStorage.setItem("profile", JSON.stringify({ email, displayName, username, accessToken }));
           setUser({ email, displayName, username, accessToken });
@@ -120,19 +117,15 @@ const Login = ({setUser}) => {
               password: "",
           });
           push('/');
+        } else {
+          toast.error('Login Failed');
         }
     } catch (err) {
-        console.log(err);
-        // if (!err?.response) {
-        //     setErrMsg('No Server Response');
-        // } else if (err.response?.status === 400) {
-        //     setErrMsg('Missing Username or Password');
-        // } else if (err.response?.status === 401) {
-        //     setErrMsg('Unauthorized');
-        // } else {
-        //     setErrMsg('Login Failed');
-        // }
-        // errRef.current.focus();
+        if (!err?.response) {
+            toast.error('Unauthorized User');
+        } else {
+            toast.error('Login Failed');
+        }
     }
   };
 
