@@ -20,6 +20,7 @@ const Addproject = (props) => {
   // default values
   const [values, setValues] = useState({
     cordinator_name: "",
+    cordinator_roel:"",
     resources: [],
     cordinator_contact:"",
     cordinator_github: "",
@@ -29,7 +30,7 @@ const Addproject = (props) => {
 
   });
 // console.log(values)
-  const { cordinator_name, resources, cordinator_contact, cordinator_github,cordinator_linkedin,cordinator_email} = values;
+  const { cordinator_name,cordinator_role, resources, cordinator_contact, cordinator_github,cordinator_linkedin,cordinator_email} = values;
 
   // handleChange of inputs
   const handleChange = (name) => (event) => {
@@ -46,7 +47,7 @@ const Addproject = (props) => {
       if (
         requests.data.filter((e) => e.addedby.email === user.email).length < 3
       ) {
-        if (cordinator_name && files?.length && cordinator_contact && cordinator_github) {
+        if (cordinator_name && cordinator_role && files?.length && cordinator_contact && cordinator_github) {
           let uuid = uuidv4().replace(/-/g, "");
             try {
 
@@ -73,6 +74,7 @@ const Addproject = (props) => {
               method: "POST",
               body: JSON.stringify({
                 cordinator_name,
+                cordinator_role,
                 resources: URLs,
                 cordinator_contact,
                 cordinator_github,
@@ -89,6 +91,7 @@ const Addproject = (props) => {
             setFiles([]);
             setValues({
               cordinator_name: "",
+              cordinator_role:"",
               resources: [],
               cordinator_contact:"",
               cordinator_github: "",
@@ -136,6 +139,19 @@ const Addproject = (props) => {
                 onChange={handleChange("cordinator_name")}
                 type="text"
                 placeholder="Cordinator Name"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                Role
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                value={cordinator_role}
+                onChange={handleChange("cordinator_role")}
+                type="text"
+                placeholder="Cordinator Role"
               />
             </div>
 

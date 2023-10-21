@@ -1,9 +1,14 @@
 import React from "react";
 
 // icons
-import { FiMail } from "react-icons/fi";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import { Link } from "@material-ui/core";
 
 const ContributorCard = ({ data, loading }) => {
+  // console.log(data);
   return (
     <div
       className="p-5 gradient-shadow bg-white m-3 rounded-md transition duration-400 cursor-pointer text-[#222] dark:bg-[#222222] border dark:border-[#444] w-full lg:w-[20%] xl:w-[20%] md:w-[40%] border-transparent hover:border-[#3d5eff98] duration-500"
@@ -24,33 +29,62 @@ const ContributorCard = ({ data, loading }) => {
         <>
           <img
             src={
-              data.photoURL
-                ? data.photoURL
-                : `https://unavatar.vercel.app/${data.email}`
+              data.resources
+                ? data.resources
+                : null
             }
-            alt={data.displayName && data.displayName}
+            alt={data.cordinator_name && data.cordinator_name}
             className="max-h-[200px] rounded-md w-full"
           />
-          <h1 className="text-2xl font-bold Raleway mt-2 truncate capitalize dark:text-[#fafafa] -mb-2">
-            {data.displayName && data.displayName}
+          <h1 className="text-2xl text-center font-bold Raleway mt-2 truncate capitalize dark:text-[#fafafa] -mb-2">
+            {data.cordinator_name && data.cordinator_name}
           </h1>
-          <a
-            className="text-xs overflow-ellipsis overflow-hidden h-[36px] Raleway text-[#3d5eff] dark:text-blue-300"
-            href={`mailto:${data.email}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {data.email && data.email}
-          </a>
-          <div className="flex items-center pt-4">
-            <a
-              href={`mailto:${data.email}`}
-              target="_blank"
-              rel="noreferrer"
-              className="dark:text-[#ddd] hover:text-[#999] dark:hover:text-[#ccc]"
-            >
-              <FiMail />
-            </a>
+
+          <h3 className="text-1xl text-center Raleway mt-5 truncate capitalize dark:text-[#fafafa] -mb-2">
+            {data.cordinator_role && data.cordinator_role}
+          </h3>
+          
+          <div className="flex items-center mt-5">
+            <div className="flex items-center pt-4 mr-7 h-15">
+              <Link
+                href={`mailto:${data.cordinator_email}`}
+                target="_blank"
+                rel="noreferrer"
+                className="dark:text-[#ddd] hover:text-[#999] dark:hover:text-[#ccc]"
+              >
+                <MailOutlineIcon />
+              </Link>
+            </div>
+            <div className="flex items-center pt-4 mr-7 h-15">
+              <Link
+                href={`https://${data.cordinator_linkedin}`}
+                target="_blank"
+                rel="noreferrer"
+                className="dark:text-[#ddd] hover:text-[#999] dark:hover:text-[#ccc]"
+              >
+                <LinkedInIcon />
+              </Link>
+            </div>
+            <div className="flex items-center pt-4 mr-7 h-15">
+              <Link
+                href={`https://${data.cordinator_github}`}
+                target="_blank"
+                rel="noreferrer"
+                className="dark:text-[#ddd] hover:text-[#999] dark:hover:text-[#ccc]"
+              >
+                <GitHubIcon />
+              </Link>
+            </div>
+            <div className="flex items-center pt-4 mr-7 h-15">
+              <Link
+                href={`tel:${data.cordinator_contact}`}
+                target="_blank"
+                rel="noreferrer"
+                className="dark:text-[#ddd] hover:text-[#999] dark:hover:text-[#ccc]"
+              >
+                <LocalPhoneIcon />
+              </Link>
+            </div>
           </div>
           </>
       )}
