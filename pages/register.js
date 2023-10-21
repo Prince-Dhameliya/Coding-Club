@@ -44,6 +44,19 @@ const Register = (props) => {
   const { push } = useRouter();
 
   useEffect(() => {
+  },[username])
+
+  // destructuring values
+
+  // handleChange of inputs
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
+  // submit event
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setIsValidUsername(true)
 
     const getUser = async () => {
       const duplicate = await fetch(
@@ -61,19 +74,8 @@ const Register = (props) => {
         setIsValidUsername(true);
       }
     }
-    if(username != "") getUser();
-  },[username])
+    // if(username != "") getUser();
 
-  // destructuring values
-
-  // handleChange of inputs
-  const handleChange = (name) => (event) => {
-    setValues({ ...values, [name]: event.target.value });
-  };
-
-  // submit event
-  const onSubmit = async (e) => {
-    e.preventDefault();
     if(!EMAIL_REGEX.test(email)) {
       toast.error("Email is not valid");
       return;
@@ -137,26 +139,30 @@ const Register = (props) => {
         }),
       });
 
-      const {success} = await response.json();
+      const {success, error} = await response.json();
+      if(error != undefined) {
+        toast.error(error);
+      } else if(success != undefined) {
+        // toasting success
+        toast.success(success);
 
-      // toasting success
-      toast.success(success);
-
-      // making everything default
-      setValues({
-        email: "",
-        mobileno: "",
-        firstname: "",
-        lastname: "",
-        username: "",
-        password: "",
-        gender: "",
-        batch: "",
-        course: "",
-      });
-      push('/login');
+        // making everything default
+        setValues({
+          email: "",
+          mobileno: "",
+          firstname: "",
+          lastname: "",
+          username: "",
+          password: "",
+          gender: "",
+          batch: "",
+          course: "",
+        });
+        push('/login');
+      } else {
+        toast.error("Something went wrong");
+      }
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong");
     }
   };
