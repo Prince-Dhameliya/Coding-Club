@@ -17,7 +17,7 @@ import axios from "axios"; // axios
 
 // components
 import {
-    ContributorCard,
+    ChapterCard,
     MainHeader,
 } from "../components";
 
@@ -71,7 +71,7 @@ const contributors = (props) => {
                     <div className="w-full flex flex-wrap items-center justify-center">
                         {webContributors.length > 0 ? (
                             webContributors.map((data, key) => (
-                                <ContributorCard data={data} loading={loading} key={key} />
+                                <ChapterCard data={data} loading={loading} key={key} />
                             ))
                         ) : (
                             <div className="p-5 gradient-shadow bg-white m-3 rounded-md transition cursor-pointer text-[#222] dark:bg-[#222222] dark:border-[#444] w-full lg:w-[20%] xl:w-[20%] md:w-[40%] border border-transparent hover:border-[#3d5eff98] duration-500">

@@ -8,33 +8,30 @@ import {
 } from '@mui/material';
 import { AddCircleOutline, DeleteOutline } from '@mui/icons-material';
 
-const DynamicInputFields = ({ onFormDataChange }) => {
-  const [inputFields, setInputFields] = useState([{member_name: '', member_contact: ''}]);
+const DynamicInputFields = ({ inputFields, setInputFields }) => {
 
   const handleAddFields = () => {
     const values = [...inputFields];
     values.push({ member_name: '', member_contact: ''});
-    setInputFields(values);
+    setInputFields(prev=>{return {...prev,members: values}});
   };
 
   const handleRemoveFields = (index) => {
     const values = [...inputFields];
     values.splice(index, 1);
-    setInputFields(values);
+    setInputFields(prev=>{return {...prev,members: values}});
   };
 
   const handleInputChange = (index, event) => {
     const values = [...inputFields];
     values[index].member_name = event.target.value;
-    setInputFields(values);
-    onFormDataChange(values);
+    setInputFields(prev=>{return {...prev,members: values}});
   };
 
   const handleChange = (index, event) => {
     const values = [...inputFields];
     values[index].member_contact = event.target.value;
-    setInputFields(values);
-    onFormDataChange(values);
+    setInputFields(prev=>{return {...prev,members: values}});
   };
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -77,7 +74,7 @@ const DynamicInputFields = ({ onFormDataChange }) => {
         startIcon={<AddCircleOutline />}
         onClick={handleAddFields}
       >
-        Add Field
+        Add Member
       </Button>
     </form>
   );

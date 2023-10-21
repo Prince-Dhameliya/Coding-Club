@@ -21,6 +21,7 @@ export { default as Comment } from "./utils/Comment";
 export { default as SvgBanner } from "./utils/SvgBanner";
 export { default as NotFound } from "./utils/NotFound";
 export { default as ContributorCard } from "./utils/ContributorCard";
+export { default as ChapterCard } from "./utils/ChapterCard";
 export { default as Request } from "./utils/Request";
 export { default as FeatureComponent } from "./utils/FeatureComponent";
 export { default as Loader } from "./utils/Loader";

@@ -6,42 +6,32 @@ import { v4 as uuidv4 } from "uuid";
 
 // toaster
 import toast from "react-hot-toast";
-import axios from "axios";
 import Tags from "../components/utils/Tags";
 import DynamicInputFields from "../components/utils/DynamicInputFields";
+
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const Addproject = (props) => {
   const { user } = props;
 
-  const handleChildTagsChange = (childTags) => {
-    setValues(prev=>{return {...prev,technologies: childTags}})
-  };
-
-  const [formData, setFormData] = useState([]);
-
-  // Callback function to update the formData state
-  const handleFormDataChange = (newData) => {
-    setFormData(newData);
-    setValues(prev=>{return {...prev,members: newData}})
-  };
-
   // default values
   const [values, setValues] = useState({
     project_name: "",
-    project_url:"",
+    project_url: "",
     project_description: "",
-    technologies:[],
+    technologies: [],
     mentor_name: "",
-    members:[],
+    members: [{ member_name: '', member_contact: '' }],
     company_name: "",
     company_address: "",
-    company_contact: "", 
+    company_contact: "",
     company_city: "",
-
-
+    type: "",
   });
-// console.log(values)
-  const { project_name,project_url,project_description,mentor_name,technologies,members,company_name,company_address,company_contact,company_city} = values;
+  // console.log(values)
+  const { project_name, project_url, project_description, mentor_name, technologies, members, company_name, company_address, company_contact, company_city, type } = values;
 
   // handleChange of inputs
   const handleChange = (name) => (event) => {
@@ -51,72 +41,61 @@ const Addproject = (props) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     // alert([project_name,project_url,[parentTags],JSON.stringify(formData),project_description,mentor_name,company_name,company_address,company_contact,company_city ])
-    
+
 
     // logic
     if (user.email) {
-      const requests = await axios.get("/api/GET/requests");
+      if (project_name && project_url && technologies && members && mentor_name && project_description) {
+        let uuid = uuidv4().replace(/-/g, "");
+        try {
+          await fetch("/api/POST/projectadd", {
+            method: "POST",
+            body: JSON.stringify({
+              project_name,
+              project_url,
+              technologies,
+              members,
+              project_description,
+              mentor_name,
+              company_information: {
+                company_name,
+                company_address,
+                company_contact,
+                company_city
+              },
+              addedby: {
+                displayName: user.displayName
+                  ? user.displayName
+                  : "Anonymous",
+                email: user.email && user.email,
+              },
+            }),
+          });
 
-      if (
-        requests.data.filter((e) => e.addedby.email === user.email).length < 3
-      ) {
-        if (project_name&& project_url && technologies && formData && mentor_name && project_description ) {
-          let uuid = uuidv4().replace(/-/g, "");
-          try {
-            await fetch("/api/POST/projectadd", {
-              method: "POST",
-              body: JSON.stringify({
-                project_name,
-                project_url,
-                technologies,
-                members,
-                project_description,
-                mentor_name,
-                company_information:{
-                  company_name,
-                  company_address,
-                  company_contact,
-                  company_city
-                },
-                addedby: {
-                  displayName: user.displayName
-                    ? user.displayName
-                    : "Anonymous",
-                  email: user.email && user.email,
-                },
-              }),
-            });
+          // toasting success
+          toast.success("Project Added Successfully...");
 
-            // toasting success
-            toast.success("Successfully Created!");
+          // making everything default
+          setValues({
+            project_name: "",
+            project_url: "",
+            project_description: "",
+            technologies: [],
+            members: [{ member_name: '', member_contact: '' }],
+            mentor_name: "",
+            company_name: "",
+            company_address: "",
+            company_contact: "",
+            company_city: "",
+            type:""
 
-            // making everything default
-            setValues({
-              project_name: "",
-              project_url:"",
-              project_description: "",
-              technologies:[],
-              members:[],
-              mentor_name: "",
-              company_name: "",
-              company_address: "",
-              company_contact: "", 
-              company_city: "",
-           
-            });
-          } catch (err) {
-            console.log(err);
-            toast.error("Something went wrong");
-          }
-        } else {
-          toast.error("Please Fill All Fields");
+          });
+        } catch (err) {
+          console.log(err);
+          toast.error("Something went wrong");
         }
       } else {
-        toast.error(
-          `You already have ${
-            requests.data.filter((e) => e.addedby.email === user.email).length
-          } requests`
-        );
+        toast.error("Please Fill All Fields");
       }
     } else {
       toast.error("Please Sign In");
@@ -150,7 +129,7 @@ const Addproject = (props) => {
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Project Url
               </label>
-              <input  
+              <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
                 value={project_url}
                 onChange={handleChange("project_url")}
@@ -159,7 +138,7 @@ const Addproject = (props) => {
               />
             </div>
 
-            
+
             <div className="-mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Project Description
@@ -171,15 +150,15 @@ const Addproject = (props) => {
                 placeholder="Project Description"
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Project Technology
               </label>
-              <Tags onTagsChange={handleChildTagsChange} />
-              
+              <Tags selectedTechnologies={technologies} setTechnologies={setValues} />
+
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Project mentor
@@ -192,59 +171,86 @@ const Addproject = (props) => {
                 placeholder="Mentor Name"
               />
             </div>
-            
+
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Project Members
               </label>
-              <DynamicInputFields onFormDataChange={handleFormDataChange}/>
+              <DynamicInputFields inputFields={members} setInputFields={setValues} />
             </div>
 
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Company Information
-              </label>
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Company Name
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={company_name}
-                onChange={handleChange("company_name")}
-                type="text"
-                placeholder="Company Name"
-              /> <br /><br />
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Company Address
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={company_address}
-                onChange={handleChange("company_address")}
-                type="text"
-                placeholder="Company Address"
-              /><br /><br />
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Company Contact
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={company_contact}
-                onChange={handleChange("company_contact")}
-                type="text"
-                placeholder="Company Contact"
-              /><br /><br />
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Company City
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={company_city}
-                onChange={handleChange("company_city")}
-                type="text"
-                placeholder="Company City"
-              /><br />
-            </div>
+
+            <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+              Company Project?
+            </label>
+            <RadioGroup value={type} onChange={handleChange("type")}>
+              <div className="flex">
+                <div className="flex items-center">
+                  <FormControlLabel
+                    value="yes"
+                    control={<Radio />}
+                  />
+                  <h3 className="-ml-5 dark:text-white text-black font-medium">
+                    Yes
+                  </h3>
+                </div>
+                <div className="flex items-center ml-6">
+                  <FormControlLabel value="no" control={<Radio />} />
+                  <h3 className="-ml-5 dark:text-white text-black font-medium">
+                    No
+                  </h3>
+                </div>
+              </div>
+            </RadioGroup>
+
+            {
+              type === "yes" && <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                  Company Information
+                </label>
+                <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                  Company Name
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                  value={company_name}
+                  onChange={handleChange("company_name")}
+                  type="text"
+                  placeholder="Company Name"
+                /> <br /><br />
+                <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                  Company Address
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                  value={company_address}
+                  onChange={handleChange("company_address")}
+                  type="text"
+                  placeholder="Company Address"
+                /><br /><br />
+                <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                  Company Contact
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                  value={company_contact}
+                  onChange={handleChange("company_contact")}
+                  type="text"
+                  placeholder="Company Contact"
+                /><br /><br />
+                <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                  Company City
+                </label>
+                <input
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                  value={company_city}
+                  onChange={handleChange("company_city")}
+                  type="text"
+                  placeholder="Company City"
+                /><br />
+              </div>
+
+            }
 
             <div className="flex items-center justify-between">
               <Btn>

@@ -161,7 +161,6 @@ const Register = (props) => {
         push('/login');
       } else {
         toast.error("Something went wrong");
-        // console.log("hello");
       }
     } catch (err) {
       toast.error("Something went wrong");
