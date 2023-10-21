@@ -44,6 +44,7 @@ const Register = (props) => {
   const { push } = useRouter();
 
   useEffect(() => {
+    setIsValidUsername(true)
   },[username])
 
   // destructuring values
@@ -56,7 +57,6 @@ const Register = (props) => {
   // submit event
   const onSubmit = async (e) => {
     e.preventDefault();
-    setIsValidUsername(true)
 
     const getUser = async () => {
       const duplicate = await fetch(
@@ -74,7 +74,7 @@ const Register = (props) => {
         setIsValidUsername(true);
       }
     }
-    // if(username != "") getUser();
+    if(username != "") getUser();
 
     if(!EMAIL_REGEX.test(email)) {
       toast.error("Email is not valid");

@@ -35,24 +35,7 @@ const Login = ({setUser}) => {
   const { push } = useRouter();
 
   useEffect(() => {
-
-    const getUser = async () => {
-        const duplicate = await fetch(
-            `http://localhost:3000/api/GET/users/${username}`,
-            {
-              method: "GET",
-            }
-        );
-        const isuserexist = await duplicate.json();
-        if(isuserexist?.length == 0) {
-            setIsValidUsername(false);
-        }
-        else {
-            setIsValidUsername(true);
-        }
-    }
-
-    if(username != "") getUser();
+    setIsValidUsername(true)
   },[username])
 
   // destructuring values
@@ -65,6 +48,25 @@ const Login = ({setUser}) => {
   // submit event
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const getUser = async () => {
+      const duplicate = await fetch(
+          `http://localhost:3000/api/GET/users/${username}`,
+          {
+            method: "GET",
+          }
+      );
+      const isuserexist = await duplicate.json();
+      if(isuserexist?.length == 0) {
+          setIsValidUsername(false);
+      }
+      else {
+          setIsValidUsername(true);
+      }
+  }
+
+  if(username != "") getUser();
+
     // if(!EMAIL_REGEX.test(email)) {
     //   toast.error("Email is not valid");
     //   return;
@@ -98,20 +100,27 @@ const Login = ({setUser}) => {
             }),
         });
         const data = await response.json();
-        const accessToken = data?.accessToken;
-        const email = data?.email;
-        const displayName = data?.displayName;
-        localStorage.setItem("profile", JSON.stringify({ email, displayName, username, accessToken }));
-        setUser({ email, displayName, username, accessToken });
+        if(!data?.email){
+          toast.error("Unauthorized User");
+        } else {
+          const accessToken = data?.accessToken;
+          const email = data?.email;
+          const displayName = data?.displayName;
+          // console.log({accessToken, displayName, username, email});
+          localStorage.setItem("profile", JSON.stringify({ email, displayName, username, accessToken }));
+          setUser({ email, displayName, username, accessToken });
 
-        // making everything default
-        setValues({
-            email: "",
-            mobileno: "",
-            username: "",
-            password: "",
-        });
-        push('/');
+          toast.success("Login")
+
+          // making everything default
+          setValues({
+              email: "",
+              mobileno: "",
+              username: "",
+              password: "",
+          });
+          push('/');
+        }
     } catch (err) {
         console.log(err);
         // if (!err?.response) {
