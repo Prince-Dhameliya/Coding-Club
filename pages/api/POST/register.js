@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   );
   const isuserexist = await duplicate.json();
 
-  if (isuserexist?.length) return res.status(409).json(); //Conflict 
+  if (isuserexist?.length) return res.status(409).json({error: `The username ${username} is not available`}); //Conflict 
 
   //encrypt the password
   const hashedPwd = await bcrypt.hash(password, 10);
