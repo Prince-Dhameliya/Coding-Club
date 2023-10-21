@@ -1,6 +1,4 @@
-export default async (req, res) => {
-    const { username } = req.query;
-  
+export default async function handler(req, res) {
     const request = await fetch(process.env.NEXT_PUBLIC_DB_URL, {
       method: "POST",
       headers: {
@@ -9,13 +7,12 @@ export default async (req, res) => {
       },
       body: JSON.stringify({
         operation: "sql",
-        sql: `SELECT username, roles FROM dev.users WHERE username = '${username}'`,
+        sql: "SELECT * FROM dev.cordinator Order By cordinator_name",
       }),
     });
   
-    let data = await request.json();
-    if(data.length === 0) return res.status(404).json([]); 
-    data[0].roles = Object.values(data[0].roles);
+    const data = await request.json();
+  
     res.status(200).json(data);
-  };
+  }
   

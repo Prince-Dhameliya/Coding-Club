@@ -3,15 +3,11 @@ import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import { useState } from 'react';
 
-export default function Tags({ onTagsChange }) {
+export default function Tags({ selectedTechnologies, setTechnologies}) {
 
-  const [selectedTags, setSelectedTags] = useState([]);
-
-  const handleTagsChange = (event, newValue) => {
-    setSelectedTags(newValue);
-    onTagsChange(newValue); // Call the callback function with the new data
+  const handleTagsChange = (event, childTechnologies) => {
+    setTechnologies(prev=>{return {...prev,technologies: childTechnologies}})
   };
 
   return (
@@ -22,7 +18,7 @@ export default function Tags({ onTagsChange }) {
         options={top100Films.map((option) => option.title)}
         defaultValue={[top100Films[13].title]}
         freeSolo
-        value={selectedTags}
+        value={selectedTechnologies}
         onChange={handleTagsChange}
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (

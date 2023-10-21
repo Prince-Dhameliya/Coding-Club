@@ -140,9 +140,10 @@ const ProjectBar = ({currentPost}) => {
             {mentor_name ? mentor_name : "Technologies not found"}
           </p>
 
-          <br />
-          {company_information ? (
+          {company_information?.company_name && (
             <>
+
+              <br />
               <h1 className="text-lg font-bold text-[#020617] mt-3">
                 Company Information
               </h1>
@@ -153,8 +154,7 @@ const ProjectBar = ({currentPost}) => {
                 <h3 className="text-[#666] mt-1 dark:text-[#aaa] text-sm lg:text-base animate__animated animate__fadeInUp" > Company City : {company_information.company_city}</h3>
               </div>
             </>
-          ) :
-            null
+          ) 
           }
         </>
       )}

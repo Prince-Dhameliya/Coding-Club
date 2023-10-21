@@ -77,6 +77,11 @@ const Header = ({ user, setUser }) => {
               Contributors
             </a>
           </Link>
+          <Link href="/team">
+            <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
+              Our Team
+            </a>
+          </Link>
           <Link href="/reviews">
             <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
               On Review
