@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default async function handler(req, res) {
   req.body = JSON.parse(req.body);
-  const {  cordinator_name, cordinator_role, resources,cordinator_contact, cordinator_github, cordinator_linkedin, cordinator_email} = req.body;
+  const {  cordinator_name, chapter, resources,cordinator_contact, cordinator_github, cordinator_linkedin, cordinator_email} = req.body;
 
   let uuid = uuidv4().replace(/-/g, "");
 
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         {
           id: uuid,
           cordinator_name:cordinator_name,
-          cordinator_role:cordinator_role,
+          chapter:chapter,
           resources:resources,
           cordinator_contact:cordinator_contact,
           cordinator_github:cordinator_github,
