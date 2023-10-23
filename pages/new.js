@@ -38,7 +38,7 @@ const New = (props) => {
   });
 
   useEffect(async () => {
-    const res = await axios.get("/api/GET/reviews");
+    // const res = await axios.get("/api/GET/reviews");
 
     // fetching
     const categories = await axios.get("/api/GET/categories");

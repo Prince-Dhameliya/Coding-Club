@@ -7,46 +7,44 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import { useEffect } from "react";
 import axios from "axios";
+import CarouselSliderPreview from "../components/utils/CarouselSliderPreview";
+
+import 'react-quill/dist/quill.snow.css';
+import {getDownloadURL, getStorage, ref, uploadBytes} from "firebase/storage";
+import {app} from "../Config/FirebaseConfig"
+
+import dynamic from "next/dynamic";
+const ReactQuill = dynamic(import('react-quill'), {
+  ssr: false,
+  loading: () => <p>Loading ...</p>,
+})
 
 const Newblog = (props) => {
   const { user } = props;
 
-  //regex to test whether url is valid
-  const is_url = (str) => {
-    var pattern = new RegExp(
-      "^" +
-        "(?:(?:https?|ftp)://)" +
-        "(?:\\S+(?::\\S*)?@)?" +
-        "(?:" +
-        "(?!(?:10|127)(?:\\.\\d{1,3}){3})" +
-        "(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})" +
-        "(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})" +
-        "(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])" +
-        "(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}" +
-        "(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))" +
-        "|" +
-        "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)" +
-        "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*" +
-        "(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))" +
-        ")" +
-        "(?::\\d{2,5})?" +
-        "(?:/\\S*)?" +
-        "$",
-      "i"
-    );
-    return pattern.test(str);
-  };
+  const storage = getStorage(app);
 
   const [values, setValues] = useState({
-    title: "",
-    img: "", // New field for image URL
-    desc: "",
+    blog_title: "",
+    blog_images: "", // New field for image URL
+    blog_description: "",
     category: "",
-    author: "",
   });
 
+  // data
+  const [categories, setCategories] = useState([]);
+  let   [files, setFiles] = useState([]);
+
+  useEffect(async () => {
+    // fetching
+    const categories = await axios.get("/api/GET/categories");
+
+    // data to be used
+    await setCategories(categories && categories.data);
+  }, []);
+
   // Destructuring values
-  const { title, img, desc, category, author } = values;
+  const { blog_title, blog_images, blog_description, category } = values;
 
   // handleChange of inputs
   const handleChange = (name) => (event) => {
@@ -56,110 +54,85 @@ const Newblog = (props) => {
   // submit event
   const onSubmit = async (e) => {
     e.preventDefault();
-    // Include the 'img' field in your data submission
-    // const postData = {
-    //   title,
-    //   img, // Image URL
-    //   desc,
-    //   category,
-    //   author,
-    // };
 
-    // // You can now submit 'postData' to your backend or API
-    // // For example, you can use Axios to send a POST request
-    // try {
-    //   const response = await axios.post('/api/GET/blogs', postData); // Adjust the endpoint
-    //   // Handle success or display a success message
-    //   toast.success('Blog post created successfully!');
-    //   // Reset the form or navigate to another page
-    // } catch (error) {
-    //   // Handle error or display an error message
-    //   toast.error('An error occurred while creating the blog post.');
-    // }
+    // logic
     if (user.username) {
-      const response = await axios.get("/api/GET/blogs");
-       if (is_url(img)) {
-         if (
-           response.data.filter((e) => e.addedby.username === user.username)
-             .length < 3
-         ) {
-           if (title && img && category) {
-             let uuid = uuidv4().replace(/-/g, "");
- 
-             try {
-               await fetch("/api/POST/blog", {
-                 method: "POST",
-                 body: JSON.stringify({
-                  title,
-                  img, 
-                  desc,
-                  category,
-                  author,
-                  addedby: {
-                    // photoURL: user.photoURL ? user.photoURL : "",
-                    displayName: user.displayName
-                      ? user.displayName
-                      : "Anonymous",
-                    username: user.username && user.username,
-                   },
-                 }),
-               });
- 
-               // toasting success
-               toast.success("Blog post created successfully!");
- 
-               // making everything default
-               setValues({
-                title: "",
-                img: "",
-                desc: "",
-                category: "",
-                author: "",
-               });
-             } catch (err) {
-               console.log(err);
-               toast.error("Something went wrong");
-             }
-           } else {
-             toast.error("Please Fill All Fields");
-           }
-         } else {
-           //on review
-         }
-       } else {
-         toast.error("URL not valid");
-       }
-     } else {
-       toast.error("Please Sign In");
-     }
+      if (files?.length && blog_title && blog_description && category) {
+        let uuid = uuidv4().replace(/-/g, "");
+
+        try {
+
+          // resources url array
+          let URLs = [];
+          
+          for (let i = 0; i < files.length; i++) {
+            const fileRef = ref(storage, "files/" + files[i].name);
+
+            await uploadBytes(fileRef, files[i])
+              .then(async (res) => {
+                await getDownloadURL(fileRef).then(async (downloadURL) => {
+                  // console.log("File available at", downloadURL);
+                  setValues(await {...values, blog_images: [...values.blog_images, downloadURL]});
+                  URLs.push(downloadURL);
+                  toast.success("File Uploaded Successfully!");
+                });
+              });
+              // .then((snapshot) => {
+              //   console.log("Uploaded a blob or file!");
+              // })
+          }
+
+          await fetch("/api/POST/blog", {
+            method: "POST",
+            body: JSON.stringify({
+             blog_title,
+             blog_images: URLs, 
+             blog_description,
+             category,
+             addedby: {
+               // photoURL: user.photoURL ? user.photoURL : "",
+               displayName: user.displayName
+                 ? user.displayName
+                 : "Anonymous",
+               username: user.username && user.username,
+              },
+            }),
+          });
+
+          // toasting success
+          toast.success("Successfully Created!");
+
+          // making everything default
+          // setFiles([]);
+          // setValues({
+          //   blog_title: "",
+          //   blog_images: "", // New field for image URL
+          //   blog_description: "",
+          //   category: "",
+          // });
+        } catch (err) {
+          console.log(err);
+          toast.error("Something went wrong");
+        }
+      } else {
+        toast.error("Please Fill All Fields");
+      }
+    } else {
+      toast.error("Please Sign In");
+    }
   };
 
-  const categories = [
-    // ... Your categories array ...
-    "Data Structures and Algorithms (DSA)",
-    "Design Analysis and Algorithms (DAA)",
-    "C++",
-    "Java",
-    "Python",
-    "HTML",
-    "CSS",
-    "JavaScript",
-    "ReactJS",
-    "NodeJS",
-    "Deep Learning",
-    "NLP",
-    "Statistical",
-    "Regression Analysis",
-    "Network Security",
-    "IoT",
-    "Cloud Security",
-    "Firewall",
-    "Cryptography",
-    "Docker",
-    "Cloud Computing",
-    "Kubarnates",
-    "Software Testing",
-  ];
+  const modules = {
+    toolbar: [
+      [{ header: "1" }, { header: "2" }],
+      ["bold", "italic", "underline"],
+      ["blockquote", "code-block"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+      ["link", "image"],
+      ["clean"],
+    ],
+  }
 
   return (
     <div className="w-full h-full bg-image">
@@ -178,36 +151,50 @@ const Newblog = (props) => {
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={title}
-                onChange={handleChange("title")}
+                value={blog_title}
+                onChange={handleChange("blog_title")}
                 type="text"
                 placeholder="Enter your title"
               />
             </div>
-            <div className="mb-2">
+            <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Image URL
+                Upload Photo
               </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={img}
-                onChange={handleChange("img")}
-                type="text"
-                placeholder="Enter image URL"
-              />
+              
+              <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                      <svg style={{height: "50px"}} className="w-8 h-8 mb-4 text-gray-700 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                      </svg>
+                      <p className="mb-2 text-sm text-gray-700 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                      
+                  </div>
+                  <input id="dropzone-file" type="file" className="hidden" onChange={(e)=> {setFiles([...files, ...Array.from(e.target.files)])}} multiple />
+              </label>
             </div>
+
+            { files?.length > 0 && 
+              <div className="flex" >
+                  {files?.map((file,index)=>{
+                    return <CarouselSliderPreview key={index} setFiles={setFiles} file={file} />
+                  })}
+              </div>
+            }
             <div className="mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
                 Description
               </label>
-               <textarea
-                  rows="5" // Adjust the number of rows as needed
-                  cols="100" // Adjust the number of columns as needed
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                  value={desc}
-                  onChange={handleChange("desc")}
-                  placeholder="Enter your description"
-               />
+               <ReactQuill
+                  className="shadow appearance-none border rounded w-full text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                  id='editor'
+                  modules={modules}
+                  theme="snow"
+                  value={blog_description}
+                  onChange={(description)=>{setValues({...values, blog_description: description})}}
+                  placeholder="Start Writing From here"
+                  required
+                />
             </div>
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
@@ -218,23 +205,12 @@ const Newblog = (props) => {
                 onChange={handleChange("category")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
-                {categories.map((category, key) => (
-                  <MenuItem value={category} key={key}>
-                    {category}
+                {categories?.map((category, key) => (
+                  <MenuItem value={category.name} key={key}>
+                    {category.name}
                   </MenuItem>
                 ))}
               </Select>
-            </div>
-            <div className="mb-2">
-              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Author Name
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={author}
-                onChange={handleChange("author")}
-                placeholder="author"
-              />
             </div>
             <div className="flex items-center justify-between">
               <Btn>
@@ -242,7 +218,7 @@ const Newblog = (props) => {
                   className="bg-app-gradient border border-[#391637] text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline shine"
                   type="submit"
                 >
-                  Add New Post
+                  Add New Blog
                 </button>
               </Btn>
             </div>

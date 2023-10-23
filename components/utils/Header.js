@@ -23,7 +23,9 @@ import UserImage from "../../styles/pngegg.png"
 // toast
 import toast from "react-hot-toast";
 
-const Header = ({ user, setUser }) => {
+const Header = (props) => {
+
+  const { user, setUser, roles, ROLES } = props; // extracting from props
   const [anchorEl, setAnchorEl] = useState(null);
   const [showNav, setShowNav] = useState(false);
 
@@ -82,11 +84,11 @@ const Header = ({ user, setUser }) => {
               Our Team
             </a>
           </Link>
-          <Link href="/reviews">
+          {roles?.find(role => [ROLES.Admin]?.includes(role)) && <Link href="/reviews">
             <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
               On Review
             </a>
-          </Link>
+          </Link>}
           <Link href="/collections">   
             <a className="text-[13.75px] font-medium ml-[18px] continuous-line text-white">
               Collections
@@ -219,13 +221,13 @@ const Header = ({ user, setUser }) => {
               </h3>
             </a>
           </Link>
-          <Link href="/reviews">
+          {roles?.find(role => [ROLES.Admin]?.includes(role)) && <Link href="/reviews">
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
                 On Review
               </h3>
             </a>
-          </Link>
+          </Link>}
           <Link href="/reviews">
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
