@@ -4,46 +4,29 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 // components
-import { Header, ProjectBar } from "../../components";
+import { Header } from "../../components";
 
 // head
 import Head from "next/head";
 import axios from "axios";
+import EventBar from "../../components/core/EventBar";
 
-const Project = (props) => {
+const Event = (props) => {
   const router = useRouter(); // router
   // getting the id
   const { id } = router.query;
 
   const [data, setData] = useState([]);
-  const [meta, setMetadata] = useState([]);
   const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    // normal state
-    setMetadata([]);
-
-    const fetchImage = async (project_url) => {
-      // fetching state
-    axios
-      .get(`/api/META/parser?url=${project_url}`)
-      .then(async (response) => {
-        setLoading(false);
-        setMetadata(response.data);
-      })
-      .catch((error) => {
-        setLoading(false);
-        setError(true);
-      });
+    const getEvent = async () => {
+      const {data} = await axios.get(`/api/GET/event/${id}`);
+      const event = await data[0];
+      setData(event);
+      setLoading(false);
     }
-
-    const getProjects = async () => {
-      const {data} = await axios.get(`/api/GET/project/${id}`);
-      const project = await data[0];
-      setData(project);
-      if(project?.project_url) fetchImage(project?.project_url);
-    }
-    if(id !== undefined) getProjects(id);
+    if(id !== undefined) getEvent(id);
   }, [id]);
 
   return (
@@ -64,11 +47,11 @@ const Project = (props) => {
           </div>
         </>
       ) : (
-        <ProjectBar currentPost={data} meta={meta} />
+        <EventBar currentPost={data} />
         )}
         </div>
         </div>
   );
 };
 
-export default Project;
+export default Event;

@@ -37,13 +37,14 @@ const AddEvent = (props) => {
     event_url:"",
     event_description: "",
     event_venue: "",
-    event_date: "",
+    event_start_date: "",
+    event_end_date: "",
     event_start_time: "", 
     event_end_time: "",
     event_resources: "",
   });
 // console.log(values)
-  let { event_name, event_url, event_description, event_venue, event_date, event_start_time, event_end_time, event_resources} = values;
+  let { event_name, event_url, event_description, event_venue, event_start_date, event_end_date, event_start_time, event_end_time, event_resources} = values;
 
   // handleChange of inputs
   const handleChange = (name) => (event) => {
@@ -57,7 +58,7 @@ const AddEvent = (props) => {
     // logic
     if (user.username && roles?.find(role => [ROLES.Admin]?.includes(role))) {
       if (is_url(event_url)) {
-          if (event_name && event_url && event_venue && event_description && event_date && event_start_time && event_end_time && event_resources ) {
+          if (event_name && event_url && event_venue && event_description && event_start_date && event_end_date && event_start_time && event_end_time && event_resources ) {
             let uuid = uuidv4().replace(/-/g, "");
             var [h, m] = event_start_time.split(":");
             event_start_time = `${(h % 12 ? h % 12 : 12)}:${m} ${(h >= 12 ? 'PM' : 'AM')}`;
@@ -74,7 +75,7 @@ const AddEvent = (props) => {
                   event_url,
                   event_description,
                   event_venue,
-                  event_date,
+                  event_date: event_start_date == event_end_date ? event_start_date : `${event_start_date + " To " + event_end_date}`,
                   event_time: event_start_time+ `${event_end_time ? " To " : ""}` + event_end_time,
                   event_resources,
                   addedby: {
@@ -95,7 +96,8 @@ const AddEvent = (props) => {
                 event_url:"",
                 event_description: "",
                 event_venue: "",
-                event_date: "",
+                event_start_date: "",
+                event_end_date: "",
                 event_start_time: "", 
                 event_end_time: "",
                 event_resources: ""
@@ -180,12 +182,24 @@ const AddEvent = (props) => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Event Date
+                Event Start Date
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
-                value={event_date}
-                onChange={handleChange("event_date")}
+                value={event_start_date}
+                onChange={handleChange("event_start_date")}
+                type="date"
+                placeholder="event-date"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
+                Event End Date
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"
+                value={event_end_date}
+                onChange={handleChange("event_end_date")}
                 type="date"
                 placeholder="event-date"
               />

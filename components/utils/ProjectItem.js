@@ -130,7 +130,7 @@ const  Projectitem = ({
           ) : (
             <>
               <div className="w-[250px] relative h-full overflow-hidden flex items-center justify-center rounded-md">
-                <Link href={`/post/${id}`}>
+                <Link href={`/project/${id}`}>
                   <a>
                     <img
                       src={meta.og && image()}
@@ -161,7 +161,7 @@ const  Projectitem = ({
                     </p>
                 </div>
                 
-                    <Link href={`/post/${id}`}>
+                    <Link href={`/project/${id}`}>
                       <a>
                         <Btn className="rounded-md ml-1">
                           <div className="border border-[#3d5eff] text-[#3d5eff] duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins dark:border-[#555] dark:text-white">
@@ -206,7 +206,7 @@ const  Projectitem = ({
             <>
               <div className="block">
                 <div className="w-full relative overflow-hidden h-[157.5px] rounded-md">
-                  <Link href={`/post/${id}`}>
+                  <Link href={`/project/${id}`}>
                     <a>
                       <img
                         src={meta.og && image()}

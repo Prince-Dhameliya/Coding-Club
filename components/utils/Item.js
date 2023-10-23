@@ -194,6 +194,9 @@ const Item = ({
     }
   }
 
+  let url = new URL(resources[0]);
+  let pathExtension = url?.pathname?.substring(url?.pathname?.lastIndexOf('.')+1);
+
   return (
     <>
       {listView ? (
@@ -220,14 +223,17 @@ const Item = ({
           ) : (
             <>
               <div className="w-[250px] relative h-full overflow-hidden flex items-center justify-center rounded-md">
-                <Link href={`/post/${id}`}>
+                <Link href={`/${review ? "review" : "post"}/${id}`}>
                   <a>
-                    <img
-                      src={resources.length > 0 && resources[0]}
-                      alt=""
-                      width="270"
-                      className="rounded-md w-full h-[150px] scale-on-hover duration-500"
-                    />
+                    {
+                      ["png", "jpeg", "jpg"].includes(pathExtension)
+                      ? <img src={url} alt="" width="270" className="rounded-md w-full h-[150px] scale-on-hover duration-500" />
+                      : ["mp4"].includes(pathExtension)
+                      ? <img src={"./assets/images/video-icon.png"} alt="" width="270" className="rounded-md w-full h-[150px] scale-on-hover duration-500" />
+                      : ["pdf"].includes(pathExtension)
+                      ? <img src={"./assets/images/pdf-icon.jpg"} alt="" width="270" className="rounded-md w-full h-[150px] scale-on-hover duration-500" />
+                      : null
+                    }
                   </a>
                 </Link>
                 <Btn className="rounded-md ml-1 absolute top-1 right-1">
@@ -277,7 +283,7 @@ const Item = ({
                         <FiTriangle className="text-sm ml-1 span duration-500" />
                       </div>
                     </Btn>
-                    <Link href={`/post/${id}`}>
+                    <Link href={`/${review ? "review" : "post"}/${id}`}>
                       <a>
                         <Btn className="rounded-md ml-1">
                           <div className="border border-[#3d5eff] text-[#3d5eff] duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins dark:border-[#555] dark:text-white">
@@ -292,7 +298,7 @@ const Item = ({
 
                 {review && roles?.find(role => [ROLES.Admin]?.includes(role)) && (
                   <>
-                  <Btn className="rounded-md cursor-not-allowed fixed top-1 right-20">
+                  <Btn className="rounded-md cursor-pointer fixed top-1 right-20">
                     <div
                       className={`shine border border-[#3d5eff] dark:border-[#555] dark:text-white text-white duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins`}
                       onClick={() => reviewResource(true)}
@@ -301,7 +307,7 @@ const Item = ({
                     </div>
                   </Btn>
 
-                  <Btn className="rounded-md cursor-not-allowed fixed top-1 right-2">
+                  <Btn className="rounded-md cursor-pointer fixed top-1 right-2">
                     <div
                       className={`shine border border-[#3d5eff] dark:border-[#555] dark:text-white text-white duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins`}
                       onClick={() => reviewResource(false)}
@@ -338,14 +344,17 @@ const Item = ({
             <>
               <div className="block">
                 <div className="w-full relative overflow-hidden h-[157.5px] rounded-md">
-                  <Link href={`/post/${id}`}>
+                  <Link href={`/${review ? "review" : "post"}/${id}`}>
                     <a>
-                      <img
-                        src={resources.length > 0 && resources[0]}
-                        alt=""
-                        width="300"
-                        className="rounded-md w-full mb-2 h-[157.5px] scale-on-hover duration-500"
-                      />
+                      {
+                        ["png", "jpeg", "jpg"].includes(pathExtension)
+                        ? <img src={url} alt="" width="300" className="rounded-md w-full mb-2 h-[157.5px] scale-on-hover duration-500" />
+                        : ["mp4"].includes(pathExtension)
+                        ? <img src={"./assets/images/video-icon.png"} alt="" width="300" className="rounded-md w-full mb-2 h-[157.5px] scale-on-hover duration-500" />
+                        : ["pdf"].includes(pathExtension)
+                        ? <img src={"./assets/images/pdf-icon.jpg"} alt="" width="300" className="rounded-md w-full mb-2 h-[157.5px] scale-on-hover duration-500" />
+                        : null
+                      }
                     </a>
                   </Link>
                   <Btn className="rounded-md ml-1 absolute top-1 right-1">
@@ -397,7 +406,7 @@ const Item = ({
                       <FiTriangle className="text-sm ml-1 span duration-500" />
                     </div>
                   </Btn>
-                  <Link href={`/post/${id}`}>
+                  <Link href={`/${review ? "review" : "post"}/${id}`}>
                     <a>
                       <Btn className="rounded-md ml-1">
                         <div className="border border-[#3d5eff] text-[#3d5eff] duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins dark:border-[#555] dark:text-white">
@@ -412,7 +421,7 @@ const Item = ({
 
               {review && roles?.find(role => [ROLES.Admin]?.includes(role)) && (
                   <>
-                  <Btn className="rounded-md cursor-not-allowed fixed bottom-1 right-20">
+                  <Btn className="rounded-md cursor-pointer fixed bottom-1 right-20">
                     <div
                       className={`shine border border-[#3d5eff] dark:border-[#555] dark:text-white text-white duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins`}
                       onClick={() => reviewResource(true)}
@@ -421,7 +430,7 @@ const Item = ({
                     </div>
                   </Btn>
 
-                  <Btn className="rounded-md cursor-not-allowed fixed bottom-1 right-2">
+                  <Btn className="rounded-md cursor-pointer fixed bottom-1 right-2">
                     <div
                       className={`shine border border-[#3d5eff] dark:border-[#555] dark:text-white text-white duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins`}
                       onClick={() => reviewResource(false)}

@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default async function handler(req, res) {
   req.body = JSON.parse(req.body);
-  const { blog_title, blog_images, blog_description, category, addedby } =
-    req.body;
+  const { upvotes, id } = req.body;
 
   let uuid = uuidv4().replace(/-/g, "");
 
@@ -15,18 +14,13 @@ export default async function handler(req, res) {
       Authorization: `Basic ${process.env.NEXT_PUBLIC_DB_AUTHORIZATION}`,
     },
     body: JSON.stringify({
-      operation: "insert",
+      operation: "update",
       schema: "dev",
       table: "blogs",
       records: [
         {
-          id: uuid,
-          blog_title,
-          blog_images,
-          blog_description,
-          category,
-          addedby,
-          upvotes: []
+          id: id,
+          upvotes: upvotes,
         },
       ],
     }),

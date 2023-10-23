@@ -41,77 +41,65 @@ const Addproject = (props) => {
     e.preventDefault();
 
     // logic
-    if (user.email) {
-      const requests = await axios.get("/api/GET/requests");
+    if (user.username) {
+      if (cordinator_name && cordinator_role && files?.length && cordinator_contact && cordinator_github) {
+        let uuid = uuidv4().replace(/-/g, "");
+          try {
 
-      if (
-        requests.data.filter((e) => e.addedby.email === user.email).length < 3
-      ) {
-        if (cordinator_name && cordinator_role && files?.length && cordinator_contact && cordinator_github) {
-          let uuid = uuidv4().replace(/-/g, "");
-            try {
-
-              // resources url array
-              let URLs = [];
-              
-              for (let i = 0; i < files.length; i++) {
-                const fileRef = ref(storage, "files/" + files[i].name);
-  
-                await uploadBytes(fileRef, files[i])
-                  .then(async (res) => {
-                    await getDownloadURL(fileRef).then(async (downloadURL) => {
-                      // console.log("File available at", downloadURL);
-                      setValues(await {...values, resources: [...values.resources, downloadURL]});
-                      URLs.push(downloadURL);
-                      toast.success("File Uploaded Successfully!");
-                    });
-                  });
-                  // .then((snapshot) => {
-                  //   console.log("Uploaded a blob or file!");
-                  // })
-              }
-            await fetch("/api/POST/cordinator", {
-              method: "POST",
-              body: JSON.stringify({
-                cordinator_name,
-                cordinator_role,
-                resources: URLs,
-                cordinator_contact,
-                cordinator_github,
-                cordinator_linkedin,
-                cordinator_email,
+            // resources url array
+            let URLs = [];
             
-              }),
-            });
+            for (let i = 0; i < files.length; i++) {
+              const fileRef = ref(storage, "files/" + files[i].name);
 
-            // toasting success
-            toast.success("Successfully Created!");
+              await uploadBytes(fileRef, files[i])
+                .then(async (res) => {
+                  await getDownloadURL(fileRef).then(async (downloadURL) => {
+                    // console.log("File available at", downloadURL);
+                    setValues(await {...values, resources: [...values.resources, downloadURL]});
+                    URLs.push(downloadURL);
+                    toast.success("File Uploaded Successfully!");
+                  });
+                });
+                // .then((snapshot) => {
+                //   console.log("Uploaded a blob or file!");
+                // })
+            }
+          await fetch("/api/POST/cordinator", {
+            method: "POST",
+            body: JSON.stringify({
+              cordinator_name,
+              cordinator_role,
+              resources: URLs,
+              cordinator_contact,
+              cordinator_github,
+              cordinator_linkedin,
+              cordinator_email,
+          
+            }),
+          });
 
-            // making everything default
-            setFiles([]);
-            setValues({
-              cordinator_name: "",
-              cordinator_role:"",
-              resources: [],
-              cordinator_contact:"",
-              cordinator_github: "",
-              cordinator_linkedin: "",
-              cordinator_email: "",
-           
-            });
-          } catch (err) {
-            console.log(err);
-            toast.error("Something went wrong");
-          }
-        } else {
-          toast.error("Please Fill All Fields");
+          // toasting success
+          toast.success("Successfully Created!");
+
+          // making everything default
+          setFiles([]);
+          setValues({
+            cordinator_name: "",
+            cordinator_role:"",
+            resources: [],
+            cordinator_contact:"",
+            cordinator_github: "",
+            cordinator_linkedin: "",
+            cordinator_email: "",
+         
+          });
+        } catch (err) {
+          console.log(err);
+          toast.error("Something went wrong");
         }
       } else {
-        toast.error(
-          `You already have ${
-            requests.data.filter((e) => e.addedby.email === user.email).length
-          } requests`
-        );
+        toast.error("Please Fill All Fields");
       }
     } else {
       toast.error("Please Sign In");

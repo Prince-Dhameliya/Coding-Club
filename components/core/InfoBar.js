@@ -24,6 +24,9 @@ import { Button } from "@material-ui/core";
 // link
 import Link from "next/link";
 
+//Pdf Viewer
+import Iframe from 'react-iframe';
+
 const InfoBar = ({
   currentPost,
   bookmarks,
@@ -226,6 +229,9 @@ const InfoBar = ({
     }
   };
 
+  let url = new URL(resources[0]);
+  let pathExtension = url?.pathname?.substring(url?.pathname?.lastIndexOf('.')+1);
+
   return (
     <div className="w-full lg:w-[65%] xl:w-[65%] h-full min-h-[90vh] bg-white rounded-md white-light-shadow border border-[#ddd] p-7 dark:bg-[#1F1F1F] dark:border-[#555] dark:text-white">
       {loading ? (
@@ -241,11 +247,24 @@ const InfoBar = ({
         </>
       ) : (
         <>
-          <img
-            src={resources[0]}
-            alt=""
-            className="rounded-md w-full mb-4 max-h-[375px]"
-          />
+          {/* Multiple resources section */}
+          <div className="rounded-md w-full mb-4 max-h-[375px]">
+              {/* {console.log(pathExtension)} */}
+            {
+              ["png", "jpeg", "jpg"].includes(pathExtension)
+              ? <img className="rounded-md w-full mb-4 max-h-[375px]" src={url} alt="" />
+              : ["mp4"].includes(pathExtension)
+              ? <video className="" muted loop controls><source src={url} type="video/mp4"/></video>
+              : ["pdf"].includes(pathExtension)
+              ? <Iframe
+                  className="w-full"
+                  url={url}
+                  id="pdf-iframe"
+                />
+              : null
+            }
+          </div>
+          
           <p className="font-bold text-2xl lg:text-3xl xl:text-3xl continuous-line hover:text-[#3d5eff] animate__animated animate__fadeInUp">
             {resource_name}
           </p>

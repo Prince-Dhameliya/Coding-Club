@@ -59,58 +59,61 @@ const Events = (props) => {
       <h1 className="text-white text-5xl font-bold mb-8">Upcoming Events</h1>
       {loading 
       ? <RoundLoader />
-      : <div className="text-white container mx-auto py-8">
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr>
-              <th className="border border-gray-300 px-4 py-2">Event Name</th>
-              <th className="border border-gray-300 px-4 py-2">Event URL</th>
-              <th className="border border-gray-300 px-4 py-2">Description</th>
-              <th className="border border-gray-300 px-4 py-2">Venue</th>
-              <th className="border border-gray-300 px-4 py-2">Date</th>
-              <th className="border border-gray-300 px-4 py-2">Time</th>
-              <th className="border border-gray-300 px-4 py-2">Resource</th>
-              <th className="border border-gray-300 px-4 py-2">To Register</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.id}>
-                <td className="border border-gray-300 px-4 py-2">
-                  <Link href={`/events/${event.id}`}>
-                    <a>{event.event_name}</a>
-                  </Link>
-                </td>
-                <td className="border border-gray-300 px-4 py-2">
-                  <a
-                    href={event.event_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                  >
-                    {event.event_url}
-                  </a>
-                </td>
-                <td className="border border-gray-300 px-4 py-2">{event.event_description}</td>
-                <td className="border border-gray-300 px-4 py-2">{event.event_venue}</td>
-                <td className="border border-gray-300 px-4 py-2">{event.event_date}</td>
-                <td className="border border-gray-300 px-4 py-2">{event.event_time}</td>
-                <td className="border border-gray-300 px-4 py-2">{event.event_resources}</td>
-                <td className={`border border-gray-300 px-4 py-2 ${event.participants.includes(user.username) ? "" : "cursor-pointer"}`}>{ event.participants.includes(user.username) ? <span className=" text-white">Registered Successfully</span> : <span className="text-white"  style={{textDecorationLine: "underline"}} onClick={() => registerEvent(event.id, event.participants)}>Click Here To Register</span>}</td>
+      : <>
+        <div className="text-white container mx-auto py-8">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Event Name</th>
+                <th className="border border-gray-300 px-4 py-2">Event URL</th>
+                <th className="border border-gray-300 px-4 py-2">Description</th>
+                <th className="border border-gray-300 px-4 py-2">Venue</th>
+                <th className="border border-gray-300 px-4 py-2">Date</th>
+                <th className="border border-gray-300 px-4 py-2">Time</th>
+                <th className="border border-gray-300 px-4 py-2">Resource</th>
+                <th className="border border-gray-300 px-4 py-2">To Register</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>}
-      {roles?.find(role => [ROLES.Admin]?.includes(role)) && <div className="mt-8">
-          <Link href="/newevent">
-            <a className="block">
-              <button className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Add Event
-              </button>
-            </a>
-          </Link>
-      </div>}
+            </thead>
+            <tbody>
+              {events.map((event) => (
+                <tr key={event.id}>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <Link href={`/event/${event.id}`}>
+                      <a>{event.event_name}</a>
+                    </Link>
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">
+                    <a
+                      href={event.event_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      {event.event_url}
+                    </a>
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2">{event.event_description}</td>
+                  <td className="border border-gray-300 px-4 py-2">{event.event_venue}</td>
+                  <td className="border border-gray-300 px-4 py-2">{event.event_date}</td>
+                  <td className="border border-gray-300 px-4 py-2">{event.event_time}</td>
+                  <td className="border border-gray-300 px-4 py-2">{event.event_resources}</td>
+                  <td className={`border border-gray-300 px-4 py-2 ${event.participants.includes(user.username) ? "" : "cursor-pointer"}`}>{ event.participants.includes(user.username) ? <span className=" text-white">Registered Successfully</span> : <span className="text-white"  style={{textDecorationLine: "underline"}} onClick={() => registerEvent(event.id, event.participants)}>Click Here To Register</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {roles?.find(role => [ROLES.Admin]?.includes(role)) && <div className="mt-8">
+            <Link href="/newevent">
+              <a className="block">
+                <button className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                  Add Event
+                </button>
+              </a>
+            </Link>
+        </div>}
+      </>
+      }
     </section>
     </div>
   );
