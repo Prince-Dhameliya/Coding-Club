@@ -29,7 +29,7 @@ import FeatureComponent from "../utils/FeatureComponent";
 
 import axios from "axios"; // axios
 
-const Hero = ({ setOpen, user, setUser }) => {
+const Hero = (props) => {
   const features = [
     {
       name: "Demo",
@@ -96,7 +96,7 @@ const Hero = ({ setOpen, user, setUser }) => {
 
   return (
     <div className="min-h-screen bg-image w-full text-[#ECF2F5] overflow-visible z-10">
-      <Header setOpen={setOpen} user={user} setUser={setUser} />
+      <Header {...props} />
       <div className="flex items-center justify-center h-auto min-h-[90vh] lg:h-[90vh] xl:h-[90vh] w-full flex-col lg:flex-row xl:flex-row overflow-hidden">
         <div className="w-full lg:w-6/12 xl:w-6/12 h-auto lg:h-full xl:h-full flex items-start justify-center flex-col pl-4 lg:pl-10 xl:pl-10 relative z-10 py-4 lg:py-0 xl:py-0 overflow-hidden animate__animated animate__fadeInLeft">
 

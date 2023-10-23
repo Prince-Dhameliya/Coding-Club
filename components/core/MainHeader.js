@@ -9,11 +9,10 @@ import Link from "next/link";
 import axios from "axios";
 
 const MainHeader = (props) => {
-  const { user, setOpen, setUser } = props; // extracting from props
   
   return (
     <div className="w-full bg-image text-white">
-      <Header user={user} setOpen={setOpen} setUser={setUser} />
+      <Header {...props} />
       <div className="w-full text-center flex items-start lg:items-center xl:items-center justify-center flex-col py-12 pl-5 lg:pl-0 xl:pl-0">
         <Link href="/">
           <a className="text-4xl font-extrabold text-[#ECF2F5] change-span-color-onhover animate__animated animate__fadeInUp">

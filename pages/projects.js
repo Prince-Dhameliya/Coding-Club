@@ -117,7 +117,7 @@ const project = (props) => {
                     </Link>
                 </div>
             </div>
-                <InfiniteScroll
+        <InfiniteScroll
             dataLength={count} //This is important field to render the next data
             next={() => setCount(count + 5)}
             hasMore={count >= data.length ? false : true}
@@ -131,7 +131,6 @@ const project = (props) => {
                 {...props}
                 setOpen={setOpen}
                 user={user}
-                review={true}
               />
             ))}
           </div>

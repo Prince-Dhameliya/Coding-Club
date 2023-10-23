@@ -85,7 +85,6 @@ const Addproject = (props) => {
               cordinator_github,
               cordinator_linkedin,
               cordinator_email,
-
             }),
           });
 
