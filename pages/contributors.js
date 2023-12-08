@@ -19,7 +19,7 @@ const contributors = (props) => {
   useEffect(async () => {
     setLoading(true);
     // fetching
-    const contributors = await axios.get("http://localhost:3000/api/GET/contributors");
+    const contributors = await axios.get("/api/GET/contributors");
 
     // obtaining data
     setWebContributors(contributors.data);

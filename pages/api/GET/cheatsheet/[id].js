@@ -21,7 +21,7 @@ export default async (req, res) => {
   })[0];
 
   const metaRequest = await fetch(
-    `http://localhost:3000/api/META/parser?url=${result.website_url}`,
+    `/api/META/parser?url=${result.website_url}`,
     {
       method: "GET",
     }

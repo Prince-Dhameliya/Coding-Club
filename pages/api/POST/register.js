@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   // check for duplicate usernames in the db
   const duplicate = await fetch(
-    `http://localhost:3000/api/GET/users/${username}`,
+    `/api/GET/users/${username}`,
     {
       method: "GET",
     }
