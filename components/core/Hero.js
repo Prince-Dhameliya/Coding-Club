@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import Lottie from 'react-lottie';
+import animationData from '../../public/assets/Laptop.json'
 
 // material design
 import { Button } from "@material-ui/core";
@@ -93,6 +95,13 @@ const Hero = (props) => {
     },
   ];
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    renderer: 'svg'
+  }
+
 
   return (
     <div className="min-h-screen bg-image w-full text-[#ECF2F5] overflow-visible z-10">
@@ -105,7 +114,7 @@ const Hero = (props) => {
           </h1>
           <p className="text-light text-[#aaa] my-2 mt-3 text-xs lg:text-sm xl:text-sm">
             The MSU Coding Club is a vibrant community of tech enthusiasts and 
-            aspiring programmers at Michigan State University. This student-led organization 
+            aspiring programmers at Faculty of Technology & Engineering. This student-led organization 
             provides a platform for students to enhance their coding skills, collaborate
             on projects, and stay up-to-date with the latest technology trends. Members of
             the MSU Coding Club engage in coding challenges, hackathons, and workshops,
@@ -128,10 +137,11 @@ const Hero = (props) => {
         </div>
         <div className="w-full lg:w-6/12 xl:w-6/12 h-auto lg:h-full xl:h-full flex items-center justify-center flex-col relative bg-pattern-hero pb-10 lg:pb-0 xl:pb-0 animate__animated animate__fadeInRight">
           <div className="absolute h-full w-full flex items-center justify-center">
-            <img
-              src="/assets/icon.svg"
-              className="w-[320px] lg:w-[450px] xl:w-[450px] opacity-50 lg:opacity-100 xl:opacity-100"
-            />
+            <Lottie
+                options={defaultOptions}
+                height={800}
+                width={800}
+               />
           </div>
         </div>
       </div>

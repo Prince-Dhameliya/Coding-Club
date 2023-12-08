@@ -33,8 +33,8 @@ const New = (props) => {
     resource_name: "",
     resources: [],
     resource_description: "",
-    resource_type: "",
-    category: "",
+    resource_type: "select-resource",
+    category: "select-category",
   });
 
   useEffect(async () => {
@@ -93,7 +93,7 @@ const New = (props) => {
       if (
         res?.data?.filter((e) => e.addedby.username === user.username).length < 3
       ) {
-        if (resource_name && files?.length && resource_description && resource_type && category) {
+        if (resource_name && files?.length && resource_description && resource_type != "select-resource" && category != "select-category") {
           let uuid = uuidv4().replace(/-/g, "");
 
           try {
@@ -203,6 +203,9 @@ const New = (props) => {
                 onChange={handleChange("resource_type")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
+                <MenuItem value={"select-resource"} key={-1}>
+                    {"Select Type"}
+                </MenuItem>
                 {resourceTypes?.map((resource_type, key) => (
                   <MenuItem value={resource_type.name} key={key}>
                     {resource_type.name}
@@ -280,6 +283,9 @@ const New = (props) => {
                 onChange={handleChange("category")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
+                <MenuItem value={"select-category"} key={-1}>
+                    {"Select Category"}
+                </MenuItem>
                 {categories?.map((category, key) => (
                   <MenuItem value={category.name} key={key}>
                     {category.name}

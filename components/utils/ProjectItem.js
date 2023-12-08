@@ -45,7 +45,7 @@ const  Projectitem = ({
   const [isBookMarked, setIsBookMarked] = useState(false); // checking is already bookmarked
 
   // destructuring data
-  const { id, project_name, project_url ,project_description} = data;
+  const { id, project_name, project_url ,project_description, comments} = data;
   
   
 
@@ -165,7 +165,7 @@ const  Projectitem = ({
                       <a>
                         <Btn className="rounded-md ml-1">
                           <div className="border border-[#3d5eff] text-[#3d5eff] duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins dark:border-[#555] dark:text-white">
-                            {data.comments.length}
+                            {comments?.length}
                             <FiMessageCircle className="text-sm ml-1 span duration-500" />
                           </div>
                         </Btn>

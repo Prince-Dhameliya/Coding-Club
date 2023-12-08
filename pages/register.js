@@ -34,9 +34,9 @@ const Register = (props) => {
     lastname: "",
     username: "",
     password: "",
-    gender: "",
-    batch: "",
-    course: "",
+    gender: "select-gender",
+    batch: "select-batch",
+    course: "select-course",
   });
   const [isValidUsername, setIsValidUsername] = useState(true);
   const { email, mobileno ,firstname, lastname, username, password, gender, batch, course } = values;
@@ -106,17 +106,17 @@ const Register = (props) => {
       return;
     }
 
-    if(!values.gender) {
+    if(values.gender == "select-gender") {
       toast.error("Gender is not selected");
       return;
     }
 
-    if(!values.batch) {
+    if(values.batch == "select-batch") {
       toast.error("Batch is not selected");
       return;
     }
 
-    if(!values.course) {
+    if(values.course == "select-course") {
       toast.error("Course is not selected");
       return;
     }
@@ -323,6 +323,9 @@ const Register = (props) => {
                 onChange={handleChange("gender")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
+                <MenuItem value={"select-gender"} key={-1}>
+                    {"Select Gender"}
+                </MenuItem>
                 {genderList.map((gender, key) => (
                   <MenuItem value={gender} key={key}>
                     {gender}
@@ -340,6 +343,9 @@ const Register = (props) => {
                 onChange={handleChange("batch")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
+                <MenuItem value={"select-batch"} key={-1}>
+                    {"Select Batch"}
+                </MenuItem>
                 {batchList.map((batch, key) => (
                   <MenuItem value={batch} key={key}>
                     {batch}
@@ -357,6 +363,9 @@ const Register = (props) => {
                 onChange={handleChange("course")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
+                <MenuItem value={"select-course"} key={-1}>
+                    {"Select Course"}
+                </MenuItem>
                 {courseList.map((course, key) => (
                   <MenuItem value={course} key={key}>
                     {course}
