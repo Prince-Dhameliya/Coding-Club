@@ -30,7 +30,7 @@ const contributors = (props) => {
     useEffect(async () => {
         setLoading(true);
         // fetching
-        const contributors = await axios.get("http://localhost:3000/api/GET/cordinators");
+        const contributors = await axios.get("/api/GET/cordinators");
 
         // obtaining data
         setWebContributors(contributors.data);

@@ -60,7 +60,7 @@ const Register = (props) => {
 
     const getUser = async () => {
       const duplicate = await fetch(
-        `http://localhost:3000/api/GET/users/${username}`,
+        `/api/GET/users/${username}`,
         {
           method: "GET",
         }
