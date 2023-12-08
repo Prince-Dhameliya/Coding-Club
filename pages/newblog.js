@@ -103,13 +103,13 @@ const Newblog = (props) => {
           toast.success("Successfully Created!");
 
           // making everything default
-          // setFiles([]);
-          // setValues({
-          //   blog_title: "",
-          //   blog_images: "", // New field for image URL
-          //   blog_description: "",
-          //   category: "",
-          // });
+          setFiles([]);
+          setValues({
+            blog_title: "",
+            blog_images: "", // New field for image URL
+            blog_description: "",
+            category: "select-category",
+          });
         } catch (err) {
           console.log(err);
           toast.error("Something went wrong");

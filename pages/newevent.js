@@ -231,7 +231,7 @@ const AddEvent = (props) => {
 
             <div className="-mb-2">
               <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                Event Resources
+                Event Required Resources
               </label>
               <textarea
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white"

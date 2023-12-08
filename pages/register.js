@@ -154,9 +154,9 @@ const Register = (props) => {
           lastname: "",
           username: "",
           password: "",
-          gender: "",
-          batch: "",
-          course: "",
+          gender: "select-gender",
+          batch: "select-batch",
+          course: "select-course",
         });
         push('/login');
       } else {
