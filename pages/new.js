@@ -144,8 +144,8 @@ const New = (props) => {
               resource_name: "",
               resources: [],
               resource_description: "",
-              resource_type: "",
-              category: "",
+              resource_type: "select-resource",
+              category: "select-category",
             });
           } catch (err) {
             console.log(err);

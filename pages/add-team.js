@@ -23,14 +23,12 @@ const Addproject = (props) => {
   // default values
   const [values, setValues] = useState({
     cordinator_name: "",
-    cordinator_roel: "",
+    chapter: "select-chapter",
     resources: [],
     cordinator_contact: "",
     cordinator_github: "",
     cordinator_linkedin: "",
     cordinator_email: "",
-
-
   });
   useEffect(async () => {
     // fetching
@@ -40,7 +38,7 @@ const Addproject = (props) => {
     await setChapterTypes(chapter_type && chapter_type.data);
   }, []);
   // console.log(values)
-  const { cordinator_name, chapter, resources, cordinator_contact, cordinator_github, cordinator_linkedin, cordinator_email } = values;
+  const { cordinator_name, chapter, cordinator_contact, cordinator_github, cordinator_linkedin, cordinator_email } = values;
 
   // handleChange of inputs
   const handleChange = (name) => (event) => {
@@ -52,7 +50,7 @@ const Addproject = (props) => {
 
     // logic
     if (user.email) {
-      if (cordinator_name && chapter && files?.length && cordinator_contact && cordinator_github) {
+      if (cordinator_name && chapter != "select-chapter" && files?.length && cordinator_contact && cordinator_github) {
         let uuid = uuidv4().replace(/-/g, "");
         try {
 
@@ -95,7 +93,7 @@ const Addproject = (props) => {
           setFiles([]);
           setValues({
             cordinator_name: "",
-            chapter: "",
+            chapter: "select-chapter",
             resources: [],
             cordinator_contact: "",
             cordinator_github: "",
@@ -144,13 +142,16 @@ const Addproject = (props) => {
 
               <div className="mb-6">
                 <label className="block text-gray-700 text-sm font-bold mb-2 dark:text-[#fafafa]">
-                  chapter
+                  Chapter
                 </label>
                 <Select
                   value={chapter}
                   onChange={handleChange("chapter")}
                   className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
                 >
+                  <MenuItem value={"select-chapter"} key={-1}>
+                      {"Select Chapter"}
+                    </MenuItem>
                   {chapterTypes?.map((chapter, key) => (
                     <MenuItem value={chapter.name} key={key}>
                       {chapter.name}
