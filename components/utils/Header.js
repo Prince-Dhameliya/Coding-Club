@@ -193,21 +193,21 @@ const Header = (props) => {
               </h3>
             </a>
           </Link> */}
-          <Link href="/contributors">
+          <Link href="/blogs">
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
                 Blogs
               </h3>
             </a>
           </Link>
-          <Link href="/contributors">
+          <Link href="/events">
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
                 Events
               </h3>
             </a>
           </Link>
-          <Link href="/contributors">
+          <Link href="/projects">
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
                 Projects
@@ -228,7 +228,7 @@ const Header = (props) => {
               </h3>
             </a>
           </Link>}
-          <Link href="/reviews">
+          <Link href="/team">
             <a className="p-2 w-full flex items-center justify-center border border-[#764dff] bg-pattern rounded-md my-[3px]">
               <h3 className="font-bold continuous-line text-center text-white">
                 Our Team

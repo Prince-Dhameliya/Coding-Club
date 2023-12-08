@@ -28,7 +28,7 @@ const Newblog = (props) => {
     blog_title: "",
     blog_images: "", // New field for image URL
     blog_description: "",
-    category: "",
+    category: "select-category",
   });
 
   // data
@@ -57,7 +57,7 @@ const Newblog = (props) => {
 
     // logic
     if (user.username) {
-      if (files?.length && blog_title && blog_description && category) {
+      if (files?.length && blog_title && blog_description && category != "select-category") {
         let uuid = uuidv4().replace(/-/g, "");
 
         try {
@@ -138,7 +138,7 @@ const Newblog = (props) => {
     <div className="w-full h-full bg-image">
       <div className="h-full min-h-screen text-[#ECF2F5] w-full p-3 flex items-center justify-center flex-col">
         <h1 className="text-2xl md:text-4xl lg:text-4xl xl:text-4xl font-bold mb-1 lg:mb-3 xl:mb-3 text-center">
-          Add Post
+          Add Blog
         </h1>
         <div className="w-full lg:w-7/12 xl:w-7/12 h-full bg-white dark:bg-[#2f2f2f] rounded-xl m-1">
           <form
@@ -205,6 +205,9 @@ const Newblog = (props) => {
                 onChange={handleChange("category")}
                 className="shadow appearance-none border rounded w-full pr-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline dark:bg-[#1f1f1f] dark:border-[#555] dark:text-white flex justify-center pl-3 Epilogue-Imp"
               >
+                <MenuItem value={"select-category"} key={-1}>
+                    {"Select Category"}
+                </MenuItem>
                 {categories?.map((category, key) => (
                   <MenuItem value={category.name} key={key}>
                     {category.name}
