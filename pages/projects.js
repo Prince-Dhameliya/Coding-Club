@@ -15,6 +15,8 @@ import {
     Loader,
     NotFound,
     SvgBanner,
+    ROLES,
+    roles
 } from "../components";
 
 import Link from "next/link";
@@ -105,16 +107,18 @@ const project = (props) => {
                         Lets make the app better together. Have a feature in mind, go ahead
                         and share add it! We're happy to implement it! ❤️
                     </p>
-                    <Link href="/add-project">
-                        <a>
-                            <Button className="!p-0 !w-auto !h-auto !m-auto shine">
-                                <div className="bg-[#3d5eff] px-4 py-2 text-base capitalize rounded-md font-semibold flex items-center justify-center text-white hover-move-to-left">
-                                    Add Project
-                                    <FiArrowRight className="text-lg ml-1 span duration-500" />
-                                </div>
-                            </Button>
-                        </a>
-                    </Link>
+                    {roles?.find(role => [ROLES.Admin]?.includes(role)) && <div className="mt-8">
+                        <Link href="/add-project">
+                            <a>
+                                <Button className="!p-0 !w-auto !h-auto !m-auto shine">
+                                    <div className="bg-[#3d5eff] px-4 py-2 text-base capitalize rounded-md font-semibold flex items-center justify-center text-white hover-move-to-left">
+                                        Add Project
+                                        <FiArrowRight className="text-lg ml-1 span duration-500" />
+                                    </div>
+                                </Button>
+                            </a>
+                        </Link>
+                    </div>}
                 </div>
             </div>
         <InfiniteScroll

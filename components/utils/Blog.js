@@ -21,6 +21,8 @@ import { FcCheckmark, FcCancel } from "react-icons/fc"
 import axios from "axios";
 import toast from "react-hot-toast";
 
+import { format } from 'date-fns';
+
 // fetching and editing data
 
 const Blog = ({
@@ -40,7 +42,7 @@ const Blog = ({
   const [changed, setChanged] = useState(); // checking is data changed
 
   // destructuring data
-  const { id, blog_title, blog_images, blog_description, upvotes, addedby } = data;
+  const { id, blog_title, blog_images, blog_description, upvotes, addedby, __createdtime__ } = data;
 
   // going to its own page
   const goToResourcePage = () => {
@@ -137,7 +139,7 @@ const Blog = ({
             </div>
             </div>
             {upvotes && (
-            <div className="flex items-center justify-start mt-1 w-full">
+            <div className="flex items-center mt-1 w-full justify-between">
                 <Btn className="rounded-md">
                 <div
                     className={`shine ${
@@ -159,16 +161,9 @@ const Blog = ({
                     <FiTriangle className="text-sm ml-1 span duration-500" />
                 </div>
                 </Btn>
-                {/* <Link href={`/${review ? "review" : "post"}/${id}`}>
-                <a>
-                    <Btn className="rounded-md ml-1">
-                    <div className="border border-[#3d5eff] text-[#3d5eff] duration-500 px-4 py-2 text-sm capitalize rounded-lg font-semibold flex items-center justify-center menu-animation-hover poppins dark:border-[#555] dark:text-white">
-                        {comments.length}
-                        <FiMessageCircle className="text-sm ml-1 span duration-500" />
-                    </div>
-                    </Btn>
-                </a>
-                </Link> */}
+                  <div className="text-xs lg:text-[12px] text-[#666] dark:text-[#aaa] mt-1">
+                    {format(new Date(__createdtime__), 'MMMM dd, yyyy')}
+                  </div>
             </div>
             )}
         </>
