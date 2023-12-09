@@ -23,10 +23,11 @@ import { Button } from "@material-ui/core";
 
 // link
 import Link from "next/link";
+import { format } from 'date-fns';
 
 const BlogBar = ({currentPost}) => {
   // destructuring currentPost[0]
-  let { blog_title, blog_images, blog_description, category, upvotes, addedby } = currentPost;
+  let { blog_title, blog_images, blog_description, category, upvotes, addedby, __createdtime__ } = currentPost;
 
   return (
     <div className="w-full lg:w-[65%] xl:w-[65%] bg-white rounded-md white-light-shadow border border-[#ddd] p-7 dark:bg-[#1F1F1F] dark:border-[#555] dark:text-white">
@@ -62,6 +63,14 @@ const BlogBar = ({currentPost}) => {
         </h1>
         <p className="text-[#666] mt-1 dark:text-[#aaa] text-sm lg:text-base animate__animated animate__fadeInUp">
             {addedby.displayName}
+        </p>
+
+        <br />
+        <h1 className="text-lg font-bold text-[#020617] mt-3">
+            Published At
+        </h1>
+        <p className="text-[#666] mt-1 dark:text-[#aaa] text-sm lg:text-base animate__animated animate__fadeInUp">
+            {format(new Date(__createdtime__), 'MMMM dd, yyyy')}
         </p>
     </div>
   );
